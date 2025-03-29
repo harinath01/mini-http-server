@@ -23,17 +23,9 @@ class RequestHandler:
         return self.not_found(request)
     
     def home(self, request: Request) -> Response:
-        response_body = ""
-        print(self.files)
-        if not self.files:
-            response_body = "<h1>No files found</h1>"
-        else:
-            response_body = "<h1>Available Files:</h1>"
-        
-        for file in self.files:
-            response_body += f"<a href='/{file}'>{file}</a><br>"
-
-        return Response(200, {'Content-Type': 'text/html'}, response_body)
+        with open('www/index.html', 'rb') as file:
+            content = file.read()
+            return Response(200, {'Content-Type': 'text/html'}, content.decode('utf-8'))
 
     def serve_static_file(self, request: Request) -> Response:
         file_path = request.path.split('/')[-1]
